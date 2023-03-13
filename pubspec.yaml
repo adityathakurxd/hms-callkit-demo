@@ -49,6 +49,8 @@ dependencies:
   cloud_functions:
   draggable_widget: 2.0.0
   share_plus: 6.3.0
+  country_picker: ^2.0.20
+  cloud_firestore: ^4.4.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
