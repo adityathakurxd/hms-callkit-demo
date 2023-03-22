@@ -3,7 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hms_callkit/whatsapp_ui/utils/custom_button.dart';
 import 'package:hms_callkit/whatsapp_ui/utils/firestore_service.dart';
-import 'package:hms_callkit/whatsapp_ui/whatsapp_page.dart';
+
+import '../app_navigation/app_router.dart';
+import '../app_navigation/navigation_service.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login-screen';
@@ -90,8 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         await FirestoreService().updateUserData(
                             token ?? "TokenNotFound",
                             phoneController.value.text.toString());
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const WhatsAppScreen()));
+
+                        NavigationService.instance
+                            .pushNamedAndRemoveUntil(AppRoute.whatsappHome);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

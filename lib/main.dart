@@ -2,8 +2,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:hms_callkit/app_navigation/navigation_service.dart';
 import 'package:hms_callkit/utility_functions.dart';
-import 'package:hms_callkit/whatsapp_ui/login_page.dart';
+
+import 'app_navigation/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,13 +34,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "HMS-Callkit Demo",
-      home: const LoginScreen(),
-      // onGenerateRoute: AppRoute.generateRoute,
-      // initialRoute: AppRoute.homePage,
-      // navigatorKey: NavigationService.instance.navigationKey,
-      // navigatorObservers: <NavigatorObserver>[
-      //   NavigationService.instance.routeObserver
-      // ],
+      onGenerateRoute: AppRoute.generateRoute,
+      initialRoute: AppRoute.whatsappLogin,
+      navigatorKey: NavigationService.instance.navigationKey,
+      navigatorObservers: <NavigatorObserver>[
+        NavigationService.instance.routeObserver
+      ],
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

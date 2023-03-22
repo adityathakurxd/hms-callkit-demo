@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hms_callkit/hmssdk/preview_page.dart';
 import 'package:hms_callkit/whatsapp_ui/utils/colors.dart';
+import 'package:hms_callkit/whatsapp_ui/utils/user_data.dart';
 
+import '../app_navigation/app_router.dart';
+import '../app_navigation/navigation_service.dart';
 import '../hmssdk/join_service.dart';
 import '../utility_functions.dart';
 
 class ChatScreen extends StatelessWidget {
-  String numberOfUser;
-  String fcmTokenOfUser;
-  ChatScreen(
-      {super.key, required this.numberOfUser, required this.fcmTokenOfUser});
+  UserData userData;
+  ChatScreen({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ChatScreen extends StatelessWidget {
               width: 5,
             ),
             Text(
-              numberOfUser,
+              userData.numberOfUser,
               style: const TextStyle(
                 fontSize: 20,
                 color: Colors.grey,
@@ -46,21 +46,23 @@ class ChatScreen extends StatelessWidget {
               //Enter the tokenEndPoint, role and userId here
               //TODO: CLEAR OUT DATA
               String? authToken = await getAuthToken(
-                  roomId: "<>>c",
+                  roomId: "641053ff4f410525264f060c",
                   role: "host",
-                  tokenEndpoint: "<>",
-                  userId: "USER$numberOfUser");
+                  tokenEndpoint:
+                      "https://prod-in2.100ms.live/hmsapi/aadi.app.100ms.live/api/token",
+                  userId: "USER${userData.numberOfUser}");
               //Checking whether authentication token is null or not
               if (authToken != null) {
-                call(receiverFCMToken: fcmTokenOfUser, authToken: authToken);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PreviewPage(
-                          userName: "USER$numberOfUser",
-                          authToken: authToken,
-                        )));
-                // NavigationService.instance.pushNamedIfNotCurrent(
-                //     AppRoute.previewPage,
-                //     args: authToken);
+                call(
+                    receiverFCMToken: userData.fcmTokenOfUser,
+                    authToken: authToken);
+
+                NavigationService.instance.pushNamedIfNotCurrent(
+                    AppRoute.previewPage,
+                    args: authToken);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Auth token is null")));
               }
             },
           ),

@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hms_callkit/whatsapp_ui/chat_page.dart';
+import 'package:hms_callkit/whatsapp_ui/utils/user_data.dart';
+
+import '../app_navigation/app_router.dart';
+import '../app_navigation/navigation_service.dart';
 
 class ChatListScreen extends StatelessWidget {
   ChatListScreen({super.key});
@@ -27,11 +30,12 @@ class ChatListScreen extends StatelessWidget {
                     document.data()! as Map<String, dynamic>;
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ChatScreen(
+                    NavigationService.instance
+                        .pushNamedIfNotCurrent(AppRoute.whatsappChat,
+                            args: UserData(
                               numberOfUser: data['number'],
                               fcmTokenOfUser: data['token'],
-                            )));
+                            ));
                   },
                   child: Column(
                     children: [
