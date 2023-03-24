@@ -36,17 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
-  // void sendPhoneNumber() {
-  //   String phoneNumber = phoneController.text.trim();
-  //   if (country != null && phoneNumber.isNotEmpty) {
-  //     ref
-  //         .read(authControllerProvider)
-  //         .signInWithPhone(context, '+${country!.phoneCode}$phoneNumber');
-  //   } else {
-  //     showSnackBar(context: context, content: 'Fill out all the fields');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

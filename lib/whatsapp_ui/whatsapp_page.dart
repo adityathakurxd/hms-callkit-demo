@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callkit_incoming/entities/call_event.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
+import 'package:hms_callkit/app_navigation/app_router.dart';
+import 'package:hms_callkit/app_navigation/navigation_service.dart';
+import 'package:hms_callkit/utility_functions.dart';
 
 import 'chats_list.dart';
 
@@ -17,7 +22,65 @@ class _WhatsAppScreenState extends State<WhatsAppScreen>
   @override
   void initState() {
     super.initState();
+    listenerEvent(onEvent);
     tabBarController = TabController(length: 3, vsync: this);
+  }
+
+  Future<void> listenerEvent(Function? callback) async {
+    try {
+      FlutterCallkitIncoming.onEvent.listen((event) async {
+        print(' HMSSDK HOME: $event');
+        switch (event!.event) {
+          case Event.ACTION_CALL_INCOMING:
+            break;
+          case Event.ACTION_CALL_START:
+            break;
+          case Event.ACTION_CALL_ACCEPT:
+            var data = event.body;
+            String authToken = data["extra"]["authToken"];
+            String userName = data["nameCaller"];
+            bool res = await getPermissions();
+            if (res) {
+              startOutGoingCall();
+              NavigationService.instance
+                  .pushNamed(AppRoute.callingPage, args: authToken);
+            }
+            break;
+          case Event.ACTION_CALL_DECLINE:
+            break;
+          case Event.ACTION_CALL_ENDED:
+            break;
+          case Event.ACTION_CALL_TIMEOUT:
+            break;
+          case Event.ACTION_CALL_CALLBACK:
+            break;
+          case Event.ACTION_CALL_TOGGLE_HOLD:
+            break;
+          case Event.ACTION_CALL_TOGGLE_MUTE:
+            break;
+          case Event.ACTION_CALL_TOGGLE_DMTF:
+            break;
+          case Event.ACTION_CALL_TOGGLE_GROUP:
+            break;
+          case Event.ACTION_CALL_TOGGLE_AUDIO_SESSION:
+            break;
+          case Event.ACTION_DID_UPDATE_DEVICE_PUSH_TOKEN_VOIP:
+            break;
+        }
+        if (callback != null) {
+          callback(event.toString());
+        }
+      });
+    } on Exception {
+      print("HMSSDK Exception");
+    }
+  }
+
+  onEvent(event) {
+    if (!mounted) return;
+    setState(() {
+      onEventLogs += "${event.toString()}\n";
+    });
   }
 
   @override
