@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: pickCountry,
-                  child: const Text('Pick Country'),
+                  child: const Text('Pick a Country'),
                 ),
                 const SizedBox(height: 5),
                 Row(
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextField(
                         controller: phoneController,
                         decoration: const InputDecoration(
-                          hintText: 'phone number',
+                          hintText: 'Phone Number',
                         ),
                       ),
                     ),

@@ -218,10 +218,10 @@ class _MeetingPageState extends State<MeetingPage>
                       width: MediaQuery.of(context).size.width,
                       color: Colors.black,
                       height: MediaQuery.of(context).size.height,
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
+                        children: [
                           Text(
                             "Waiting for other peer to join",
                             style: TextStyle(color: Colors.white, fontSize: 20),
@@ -240,23 +240,23 @@ class _MeetingPageState extends State<MeetingPage>
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
-                        onTap: () async {
-                          HMSSDKInteractor.hmsSDK
-                              ?.leave(hmsActionResultListener: this);
+                        onTap: () => {
+                          HMSSDKInteractor.hmsSDK?.switchCamera(),
+                          if (mounted)
+                            {
+                              setState(() {
+                                isLocalVideoOn = !isLocalVideoOn;
+                              })
+                            }
                         },
-                        child: Container(
-                          decoration:
-                              BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                            BoxShadow(
-                              color: Colors.red.withAlpha(60),
-                              blurRadius: 3.0,
-                              spreadRadius: 5.0,
-                            ),
-                          ]),
-                          child: const CircleAvatar(
-                            radius: 25,
-                            backgroundColor: Colors.red,
-                            child: Icon(Icons.call_end, color: Colors.white),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.grey.withOpacity(0.3),
+                          child: Icon(
+                            isLocalVideoOn
+                                ? Icons.switch_camera
+                                : Icons.switch_camera,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -297,6 +297,27 @@ class _MeetingPageState extends State<MeetingPage>
                           child: Icon(
                             isLocalAudioOn ? Icons.mic : Icons.mic_off,
                             color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          HMSSDKInteractor.hmsSDK
+                              ?.leave(hmsActionResultListener: this);
+                        },
+                        child: Container(
+                          decoration:
+                              BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                            BoxShadow(
+                              color: Colors.red.withAlpha(60),
+                              blurRadius: 3.0,
+                              spreadRadius: 5.0,
+                            ),
+                          ]),
+                          child: const CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.red,
+                            child: Icon(Icons.call_end, color: Colors.white),
                           ),
                         ),
                       ),

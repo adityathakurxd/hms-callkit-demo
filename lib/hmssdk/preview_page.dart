@@ -233,7 +233,7 @@ class _PreviewPageState extends State<PreviewPage>
                   ],
                 ),
                 child: Text(
-                  peer?.name.substring(0, 1) ?? "D",
+                  peer?.name.substring(0, 1) ?? "W",
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 24,
